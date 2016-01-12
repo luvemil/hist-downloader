@@ -5,7 +5,7 @@ import re
 class ForexSpider(scrapy.Spider):
     """docstring for ForexCrawler"""
     name = "forexhistory"
-    allowed_domains = ["http://www.histdata.com"]
+    allowed_domains = ["www.histdata.com"]
 
     start_urls = ["http://www.histdata.com/download-free-forex-data/?/ascii/1-minute-bar-quotes"]
 
@@ -19,7 +19,7 @@ class ForexSpider(scrapy.Spider):
             item = ForexHistoryItem()
             item['name'] = name
             item['year'] = "2016"
-            req.meta[item] = item
+            req.meta['item'] = item
             yield req
         if len(cur_pair_nodes) == 0:
             yield None
@@ -51,6 +51,6 @@ class ForexSpider(scrapy.Spider):
 
     def save_values(self, response):
         item = response.meta['item']
-        with open("data/values/%s.csv" % item['name'], "wb") as f:
+        with open("data/values/%s.zip" % item['name'], "wb") as f:
             f.write(response.body)
         yield item
